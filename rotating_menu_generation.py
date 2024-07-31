@@ -1,5 +1,5 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 # Load the CSV file
 file_path = '/mnt/data/Costs & Profitability - Cookie Tracking.csv'
@@ -10,6 +10,7 @@ data['Price'] = data['Price'].replace(r'[\$,]', '', regex=True).astype(float)
 
 # Display the first few rows of the data to ensure it is loaded correctly
 data.head()
+
 # Initialize some variables
 weeks = 52
 weekly_menu = []
@@ -24,6 +25,7 @@ for week in range(1, weeks + 1):
     
     # Ensure there is always one top 15 cookie other than 'Crave (Milk) Chocolate Chip Cookie'
     top_15_other = data[(data['Ranking'] <= 15) & (data['Cookie Name'] != 'Crave (Milk) Chocolate Chip Cookie')]
+
     if not top_15_other.empty:
         top_15_other_sample = top_15_other.sample(1)
         weekly_cookies.extend(top_15_other_sample['Cookie Name'].tolist())
@@ -31,6 +33,7 @@ for week in range(1, weeks + 1):
     # Ensure at least one but not more than two chilled cookies
     chilled_sample = data[(data['Temperature'] == 'Chilled') & (~data['Cookie Name'].isin(weekly_cookies))]
     num_chilled = np.random.choice([1, 2], p=[0.8, 0.2])
+    
     if len(chilled_sample) >= num_chilled:
         weekly_cookies.extend(chilled_sample.sample(num_chilled)['Cookie Name'].tolist())
     
